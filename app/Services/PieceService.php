@@ -16,6 +16,11 @@ class PieceService
         return $this->pieceRepository->getFilteredPaginated($projectId, $estado);
     }
 
+    public function getPiecesByBlockWithFilters(int $blockId, ?string $estado = null): LengthAwarePaginator
+    {
+        return $this->pieceRepository->getByBlockIdWithFiltersPaginated($blockId, $estado);
+    }
+
     public function getPiecesByBlock(int $blockId): Collection
     {
         return $this->pieceRepository->getByBlockId($blockId);

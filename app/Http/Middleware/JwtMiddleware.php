@@ -93,7 +93,11 @@ class JwtMiddleware
 
     private function key(): string
     {
-        $key = env('JWT_SECRET', config('app.key'));
+        // Usar la misma clave JWT que auth-service
+        $key = env('JWT_SECRET');
+        if (!$key) {
+            throw new \Exception('JWT_SECRET no está configurado en el entorno');
+        }
         return str_starts_with($key, 'base64:') ? base64_decode(substr($key, 7)) : $key;
     }
 }

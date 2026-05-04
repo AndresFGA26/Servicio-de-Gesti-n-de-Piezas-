@@ -1,18 +1,22 @@
-# 📦 Pieces Service - Microservicio de Gestión de Piezas
+# 🏭 Pieces Service - Microservicio de Gestión de Piezas
 
-## 📋 Descripción
+## 📋 Descripción del Servicio
 
-Microservicio Laravel dedicado a la gestión completa de piezas metálicas con estructura jerárquica de proyectos → bloques → piezas. Proporciona endpoints CRUD, cálculos automáticos y reportes detallados.
+Microservicio Laravel 13+ especializado en la gestión completa del ciclo de vida de piezas de manufactura. Implementa una arquitectura robusta con relaciones jerárquicas Proyecto → Bloques → Piezas, cálculo automático de métricas de producción y reportes de estado en tiempo real.
 
-## 🏗️ Arquitectura
+## 🏗️ Arquitectura General del Sistema
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Frontend     │◄──►│  Auth Service   │◄──►│ Pieces Service │
-│   React/TS     │ JWT │   (Laravel)     │ JWT │   (Laravel)     │
-│   Port: 5173    │    │   Port: 8000    │    │   Port: 8001    │
+│   Frontend      │    │  Auth Service   │    │ Pieces Service  │
+│   (React SPA)   │◄──►│  (Laravel JWT)  │◄──►│  (Laravel API)  │
+│                 │    │                 │    │                 │
+│ - CRUD UI       │    │ - JWT Tokens    │    │ - Business Logic│
+│ - Data Display  │    │ - User Mgmt     │    │ - Data Models   │
+│ - Reports       │    │ - Session Mgmt  │    │ - Calculations  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
+         └──────────────────────┼──────────────────────┘
          └───────────────────────┼───────────────────────┘
                                  │
                     ┌─────────────────┐

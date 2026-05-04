@@ -16,13 +16,12 @@ class PieceController extends Controller
 
     public function __construct(private PieceService $pieceService) {}
 
-    public function index(Request $request)
+    public function index(Request $request, $blockId)
     {
-        $projectId = $request->query('project_id');
         $estado = $request->query('estado');
 
-        $pieces = $this->pieceService->getFilteredPaginated($projectId, $estado);
-        return $this->successResponse($pieces, 'Piezas obtenidas exitosamente');
+        $pieces = $this->pieceService->getPiecesByBlockWithFilters($blockId, $estado);
+        return $this->successResponse($pieces, 'Piezas del bloque obtenidas exitosamente');
     }
 
     public function byBlock($blockId)
@@ -43,7 +42,7 @@ class PieceController extends Controller
         return $this->successResponse($piece, 'Pieza obtenida exitosamente');
     }
 
-    public function update(UpdatePieceRequest $request, $blockId, $id)
+    public function update(UpdatePieceRequest $request, $id)
     {
         $piece = $this->pieceService->updatePiece($id, $request->validated());
         return $this->successResponse($piece, 'Pieza actualizada correctamente');

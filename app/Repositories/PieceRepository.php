@@ -26,6 +26,28 @@ class PieceRepository
         return $query->paginate($perPage);
     }
 
+    public function getByBlockIdWithFilters(int $blockId, ?string $estado = null): Collection
+    {
+        $query = Piece::where('block_id', $blockId);
+        
+        if ($estado) {
+            $query->where('estado', $estado);
+        }
+        
+        return $query->get();
+    }
+
+    public function getByBlockIdWithFiltersPaginated(int $blockId, ?string $estado = null): LengthAwarePaginator
+    {
+        $query = Piece::where('block_id', $blockId);
+
+        if ($estado) {
+            $query->where('estado', $estado);
+        }
+
+        return $query->paginate(10); // 10 items por página
+    }
+
     public function getByBlockId(int $blockId): Collection
     {
         return Piece::where('block_id', $blockId)->get();

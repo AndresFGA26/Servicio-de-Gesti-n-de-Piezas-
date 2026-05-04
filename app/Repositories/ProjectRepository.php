@@ -4,12 +4,18 @@ namespace App\Repositories;
 
 use App\Models\Project;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProjectRepository
 {
     public function getAll(): Collection
     {
         return Project::all();
+    }
+
+    public function getAllPaginated(): LengthAwarePaginator
+    {
+        return Project::paginate(10); // 10 items por página
     }
 
     public function findById(int $id): Project

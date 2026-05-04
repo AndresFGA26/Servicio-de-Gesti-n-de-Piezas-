@@ -17,7 +17,8 @@ class ProjectController extends Controller
 
     public function index()
     {
-        return $this->successResponse($this->projectService->getAllProjects(), 'Proyectos obtenidos exitosamente');
+        $projects = $this->projectService->getAllProjects();
+        return $this->successResponse($projects, 'Proyectos obtenidos exitosamente');
     }
 
     public function store(StoreProjectRequest $request)
