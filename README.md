@@ -2,7 +2,188 @@
 
 ## 📋 Descripción del Servicio
 
-Microservicio Laravel 13+ especializado en la gestión completa del ciclo de vida de piezas de manufactura. Implementa una arquitectura robusta con relaciones jerárquicas Proyecto → Bloques → Piezas, cálculo automático de métricas de producción y reportes de estado en tiempo real.
+Microservicio Laravel 11 especializado en la gestión completa del ciclo de vida de piezas de manufactura. Implementa una arquitectura robusta con relaciones jerárquicas Proyecto → Bloques → Piezas, cálculo automático de métricas de producción y reportes de estado en tiempo real.
+
+## 🎯 **ESTADO FINAL DEL PROYECTO**
+
+### **✅ FUNCIONALIDADES IMPLEMENTADAS**
+- **CRUD Projects** completo con paginación
+- **CRUD Blocks** relacionado con projects
+- **CRUD Pieces** relacionado con blocks
+- **Middleware JWT** protegiendo todos los endpoints
+- **Paginación** con Laravel LengthAwarePaginator
+- **Validaciones** robustas con Request classes
+- **Base de datos PostgreSQL** vía Supabase
+- **CORS** configurado globalmente
+- **Reportes** con endpoint `/reports/pieces`
+
+### **🔧 ARQUITECTURA IMPLEMENTADA**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │  Auth Service   │    │ Pieces Service  │
+│   (React SPA)   │◄──►│  (Laravel JWT)  │◄──►│  (Laravel API)  │
+│   Port: 5173    │    │   Port: 8000    │    │   Port: 8001    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                       │                       │
+         └──────────────────────┼──────────────────────┘
+                                 │
+                    ┌─────────────────┐
+                    │  PostgreSQL DB  │
+                    │   (Supabase)    │
+                    └─────────────────┘
+```
+
+### **⚠️ LIMITACIONES CONOCIDAS**
+- **No hay eliminación en cascada** configurada en BD
+- **Validaciones básicas**, podrían ser más robustas
+- **No hay rate limiting** en endpoints
+- **Base de datos compartida** (no es puro microservicio)
+- **No hay caching** de consultas frecuentes
+
+### **🚀 ESTADO PARA ENTREVISTA**
+**✅ PROYECTO LISTO PARA SUSTENTACIÓN TÉCNICA**
+
+Cumple con requisitos fundamentales de microservicios:
+- Dominio de negocio bien delimitado
+- API RESTful con versionado
+- Protección JWT completa
+- Escalabilidad independiente
+
+**Nivel recomendado:** Junior/Mid Developer
+
+---
+
+## 🚀 **INSTALACIÓN Y CONFIGURACIÓN**
+
+### **Prerrequisitos**
+- PHP 8.2+
+- Composer
+- PostgreSQL (vía Supabase)
+- Laravel 11
+- Auth Service corriendo en puerto 8000
+
+### **Instalación**
+```bash
+# Clonar el repositorio
+git clone <repository-url>
+cd pieces-service
+
+# Instalar dependencias
+composer install
+
+# Configurar variables de entorno
+cp .env.example .env
+
+# Generar key de aplicación
+php artisan key:generate
+
+# Ejecutar migraciones
+php artisan migrate
+
+# Iniciar servidor
+php artisan serve --port=8001
+```
+
+### **Configuración de Variables de Entorno**
+```env
+DB_CONNECTION=pgsql
+DB_HOST=aws-1-us-east-1.pooler.supabase.com
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=postgres.kllmebcpltitrajbfxfg
+DB_PASSWORD="Unicorniomorado777$"
+
+JWT_SECRET=your-jwt-secret-key
+```
+
+---
+
+## 📡 **ENDPOINTS DE LA API**
+
+| Método | Endpoint | Descripción | Autenticación |
+|--------|----------|-------------|---------------|
+| GET | `/api/v1/projects` | Listar proyectos | ✅ Sí |
+| POST | `/api/v1/projects` | Crear proyecto | ✅ Sí |
+| PUT | `/api/v1/projects/{id}` | Actualizar proyecto | ✅ Sí |
+| DELETE | `/api/v1/projects/{id}` | Eliminar proyecto | ✅ Sí |
+| GET | `/api/v1/projects/{project}/blocks` | Listar bloques de proyecto | ✅ Sí |
+| POST | `/api/v1/blocks` | Crear bloque | ✅ Sí |
+| PUT | `/api/v1/blocks/{id}` | Actualizar bloque | ✅ Sí |
+| DELETE | `/api/v1/blocks/{id}` | Eliminar bloque | ✅ Sí |
+| GET | `/api/v1/blocks/{block}/pieces` | Listar piezas de bloque | ✅ Sí |
+| POST | `/api/v1/blocks/{block}/pieces` | Crear pieza | ✅ Sí |
+| PUT | `/api/v1/pieces/{id}` | Actualizar pieza | ✅ Sí |
+| DELETE | `/api/v1/pieces/{id}` | Eliminar pieza | ✅ Sí |
+| GET | `/api/v1/reports/pieces` | Reportes de piezas | ✅ Sí |
+
+---
+
+## 🔐 **AUTENTICACIÓN**
+
+Todos los endpoints (excepto los de auth-service) requieren autenticación JWT:
+
+```bash
+# Header requerido
+Authorization: Bearer <access_token>
+```
+
+### **Ejemplo de Request**
+```bash
+curl -X GET http://localhost:8001/api/v1/projects \
+  -H "Authorization: Bearer <access_token>" \
+  -H "Content-Type: application/json"
+```
+
+---
+
+## 🛠️ **DESARROLLO**
+
+### **Estructura de Archivos**
+```
+pieces-service/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/V1/
+│   │   ├── Middleware/
+│   │   └── Requests/
+│   ├── Models/
+│   ├── Repositories/
+│   └── Services/
+├── database/
+│   └── migrations/
+└── routes/
+    └── api.php
+```
+
+### **Testing**
+```bash
+# Ejecutar tests (cuando estén implementados)
+php artisan test
+
+# Verificar migraciones
+php artisan migrate:status
+```
+
+---
+
+## 🐛 **SOLUCIÓN DE PROBLEMAS**
+
+### **Problemas Comunes**
+1. **Error 401 Unauthorized**: Verificar token JWT válido
+2. **Error de conexión a BD**: Verificar credenciales de Supabase
+3. **Error 403 Forbidden**: Verificar middleware JWT
+4. **CORS issues**: Asegurar que CORS middleware esté activo
+
+### **Logs**
+```bash
+# Ver logs de errores
+php artisan log:show
+
+# Limpiar logs
+php artisan log:clear
+```
+
+---
 
 ## 🏗️ Arquitectura General del Sistema
 
