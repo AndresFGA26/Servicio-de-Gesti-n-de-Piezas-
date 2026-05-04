@@ -15,6 +15,7 @@ Este proyecto está dividido en 3 repositorios independientes, cumpliendo con el
 👉 https://github.com/AndresFGA26/gestion-de-piezas-front.git
 📋 Resumen del Proyecto
 
+
 Sistema empresarial para la gestión industrial de piezas metálicas con:
 
 🔐 Autenticación con JWT + Refresh Token
